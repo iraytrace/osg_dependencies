@@ -30,13 +30,17 @@ build_package() {
     popd
 }
 
+if [ ! -f ${INSTALL_DIR}/lib/zlib.lib ] ; then
 build_package zlib-1.2.11 
 if [ ! -f ${INSTALL_DIR}/lib/zlib.lib ] ; then
     echo "zlib build failed"
     exit 1
 fi
+else
+    echo zlib already installed
+fi
 
-
+if [ ! -f ${INSTALL_DIR}/lib/libpng16.lib ] ; then
 build_package libpng \
 	      -DZLIB_INCLUDE_DIR=${INSTALL_DIR}/include \
 	      -DZLIB_LIBRARY_DEBUG=${INSTALL_DIR}/lib/zlibd.lib \
@@ -45,14 +49,21 @@ if [ ! -f ${INSTALL_DIR}/lib/libpng16.lib ] ; then
     echo libpng build failed
     exit 1
 fi
+else
+    echo png already installed
+fi
 
-
+if [ ! -f ${INSTALL_DIR}/lib/libjpeg.lib ] ; then
 cmd "/c jpeg.bat"
 if [ ! -f ${INSTALL_DIR}/lib/libjpeg.lib ] ; then
     echo jpeg build failed
     exit 1
 fi
+else
+    echo jpg already installed
+fi
     
+if [ ! -f ${INSTALL_DIR}/lib/tiff.lib ] ; then
 build_package libtiff \
 	      -DZLIB_INCLUDE_DIR=${INSTALL_DIR}/include \
 	      -DZLIB_LIBRARY_DEBUG=${INSTALL_DIR}/lib/zlibd.lib \
@@ -62,20 +73,28 @@ build_package libtiff \
 if [ ! -f ${INSTALL_DIR}/lib/tiff.lib ] ; then
     echo tiff build failed
     exit 1
-    
 fi
+else
+    echo tiff already installed
+fi
+
 #glut 
 #giflib 
+
+if [ ! -f ${INSTALL_DIR}/lib/minizip.lib ] ; then
 build_package minizip \
 	      -DZLIB_INCLUDE_DIR=${INSTALL_DIR}/include \
 	      -DZLIB_LIBRARY_DEBUG=${INSTALL_DIR}/lib/zlibd.lib \
 	      -DZLIB_LIBRARY_RELEASE=${INSTALL_DIR}/lib/zlib.lib
-
 if [ ! -f ${INSTALL_DIR}/lib/minizip.lib ] ; then
     echo minizip build failed
     exit 1
 fi
+else
+    echo minizip already installed
+fi
 
+if [ ! -f ${INSTALL_DIR}/lib/libcurl_imp.lib ] ; then
 build_package curl \
 	      -DZLIB_INCLUDE_DIR=${INSTALL_DIR}/include \
 	      -DZLIB_LIBRARY_DEBUG=${INSTALL_DIR}/lib/zlibd.lib \
@@ -85,22 +104,33 @@ if [ ! -f ${INSTALL_DIR}/lib/libcurl_imp.lib ] ; then
     echo curl build failed
     exit 1
 fi
-		  
+else
+    echo curl already installed
+fi		  
 
-build_package proj4
-if [ ! -f ${INSTALL_DIR}/lib/proj4.lib ] ; then
+if [ ! -f ${INSTALL_DIR}/lib/proj_4_9.lib ] ; then
+build_package proj4 \
+	      -DINCLUDEDIR=${INSTALL_DIR}/include \
+	      -DLIBDIR=${INSTALL_DIR}/lib
+if [ ! -f ${INSTALL_DIR}/lib/proj_4_9.lib ] ; then
     echo proj4 build failed
     exit 1
 fi
+else
+    echo proj4 already installed
+fi
 
-
+if [ ! -f ${INSTALL_DIR}/lib/gdal_i.lib ] ; then
 cmd "/c gdal.bat"
 if [ ! -f ${INSTALL_DIR}/lib/gdal_i.lib ] ; then
     echo gdal build failed
     exit 1
 fi
-
+else
+    echo gdal already installed
+fi
 # ------ simage -----
+if [ ! -f ${INSTALL_DIR}/lib/simage1.lib ] ; then
 if [ -d simage-1.7.0/build/msvc12 ] ; then
     rm -rf simage-1.7.0/build/msvc12
 fi
@@ -110,9 +140,13 @@ if [ ! -f ${INSTALL_DIR}/lib/simage1.lib ] ; then
     echo simage build failed
     exit 1
 fi
+else
+    echo simage already installed
+fi
 
 
 # ------ coin -----
+if [ ! -f ${INSTALL_DIR}/lib/coin3.lib ] ; then
 if [ ! -f Coin-3.1.3/build/msvc9/include/Inventor/system/inttypes.h.orig ] ; then
     echo patching Coin
     patch -b Coin-3.1.3/build/msvc9/include/Inventor/system/inttypes.h < coin.patch
@@ -124,8 +158,13 @@ if [ ! -f ${INSTALL_DIR}/lib/coin3.lib ] ; then
     echo coin3 build failed
     exit 1
 fi
+else
+    echo coin already installed
+fi
 
 echo ---------------- $1 ---------------- 
+if [ ! -f ${INSTALL_DIR}/lib/osg.lib ] ; then
+
 if [ ! -d OpenSceneGraph-3.4.0/cmake_build ] ; then 
     echo mkdir OpenSceneGraph-3.4.0/cmake_build
     mkdir OpenSceneGraph-3.4.0/cmake_build
@@ -187,3 +226,4 @@ if [ ! -f ${INSTALL_DIR}/lib/osgd.lib ] ; then
     exit 1
 fi
     
+fi
