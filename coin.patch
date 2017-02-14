@@ -1,0 +1,21 @@
+--- Coin-3.1.3/build/msvc9/include/Inventor/system/inttypes.h	2010-03-02 08:20:09.000000000 -0500
++++ inttypes.h	2017-02-12 09:42:02.033485400 -0500
+@@ -113,6 +113,7 @@
+ #ifdef HAVE_INTTYPES_H
+ #include <inttypes.h>
+ #else
++#define HAVE_STDINT_H 1
+ #ifdef HAVE_STDINT_H
+ #include <stdint.h>
+ #endif /* HAVE_STDINT_H */
+@@ -124,7 +125,9 @@
+ #include <stddef.h>
+ #endif /* HAVE_STDDEF_H */
+ 
+-
++#ifndef HAVE_INT8_T
++#define HAVE_INT8_T 1
++#endif
+ #if !defined(HAVE_INT8_T) && defined(COIN_INT8_T)
+ typedef COIN_INT8_T int8_t;
+ #define HAVE_INT8_T 1
