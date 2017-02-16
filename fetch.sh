@@ -52,23 +52,32 @@ if [ ! -d gdal ] ; then
     mv gdal-2.1.3 gdal
 fi
 
-if [ ! -d simage-1.7.0 ] ; then
-    if [ ! -f simage-1.7.0.tar.gz ] ; then
-	echo fetching simage
-	curl -L -k -O https://bitbucket.org/Coin3D/coin/downloads/simage-1.7.0.tar.gz
+if [ X${BIN_COIN} == X ]  ; then
+    if [ ! -d simage-1.7.0 ] ; then
+	if [ ! -f simage-1.7.0.tar.gz ] ; then
+	    echo fetching simage
+	    curl -L -k -O https://bitbucket.org/Coin3D/coin/downloads/simage-1.7.0.tar.gz
+	fi
+	echo unpacking simage
+	tar xaf simage-1.7.0.tar.gz
     fi
-    echo unpacking simage
-    tar xaf simage-1.7.0.tar.gz
-fi
 
-if [ ! -d Coin-3.1.3 ] ; then
-    echo No Coin
-    if [ ! -f Coin-3.1.3.tar.gz ] ; then
-	echo fetching Coin
-	curl -L -k -O https://bitbucket.org/Coin3D/coin/downloads/Coin-3.1.3.tar.gz
+    if [ ! -d Coin-3.1.3 ] ; then
+	echo No Coin
+	if [ ! -f Coin-3.1.3.tar.gz ] ; then
+	    echo fetching Coin
+	    curl -L -k -O https://bitbucket.org/Coin3D/coin/downloads/Coin-3.1.3.tar.gz
+	fi
+	echo unpacking Coin
+	tar xaf Coin-3.1.3.tar.gz
     fi
-    echo unpacking Coin
-    tar xaf Coin-3.1.3.tar.gz
+else
+    curl -L -k -O https://bitbucket.org/Coin3D/coin/downloads/Coin-3.1.3-bin-msvc9-amd64.zip
+    mkdir binCoin
+    pushd binCoin
+    echo unpacking binCoin
+    unzip -qq Coin-3.1.3-bin-msvc9-amd64.zip
+    popd
 fi
 
 if [ ! -d OpenSceneGraph-3.4.0 ] ; then
